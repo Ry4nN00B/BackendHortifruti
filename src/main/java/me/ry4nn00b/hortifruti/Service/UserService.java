@@ -3,9 +3,11 @@ package me.ry4nn00b.hortifruti.Service;
 import me.ry4nn00b.hortifruti.Model.UserModel;
 import me.ry4nn00b.hortifruti.Repository.IUserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class UserService {
 
     private final IUserRepository repository;

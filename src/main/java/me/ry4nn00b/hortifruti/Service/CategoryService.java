@@ -2,9 +2,11 @@ package me.ry4nn00b.hortifruti.Service;
 
 import me.ry4nn00b.hortifruti.Model.CategoryModel;
 import me.ry4nn00b.hortifruti.Repository.ICategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CategoryService {
 
     private final ICategoryRepository repository;

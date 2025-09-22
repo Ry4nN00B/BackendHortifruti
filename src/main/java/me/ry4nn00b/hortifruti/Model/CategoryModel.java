@@ -1,11 +1,13 @@
 package me.ry4nn00b.hortifruti.Model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collation = "category")
 public class CategoryModel {
 
     //Category Attribute's
+    @Id
     private String id;
     private String name;
     private String description;
@@ -19,7 +21,6 @@ public class CategoryModel {
         this.description = description;
 
     }
-
 
     //Getter's and Setter's
     public String getId(){
