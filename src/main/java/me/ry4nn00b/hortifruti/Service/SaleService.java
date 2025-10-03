@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +22,17 @@ public class SaleService {
     public SaleService(ISaleRepository saleRepository, IProductRepository productRepository) {
         this.saleRepository = saleRepository;
         this.productRepository = productRepository;
+    }
+
+    //Method's
+    public List<SaleModel> saleList() {
+        return saleRepository.findAll();
+    }
+    public Optional<SaleModel> saleFindById(String saleId) {
+        return saleRepository.findById(saleId);
+    }
+    public void saleDeleteId(String saleId){
+        saleRepository.deleteById(saleId);
     }
 
     //Sale Register/Manager

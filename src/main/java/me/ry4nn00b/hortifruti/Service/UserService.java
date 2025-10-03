@@ -26,7 +26,6 @@ public class UserService {
         return repository.save(user);
 
     }
-
     public Optional<UserModel> authentic(String email, String password) {
         Optional<UserModel> user = repository.findByEmail(email);
         if (user.isPresent()) {
@@ -36,6 +35,12 @@ public class UserService {
             }
         }
         return Optional.empty();
+    }
+    public Optional<UserModel> findById(String userId){
+        return repository.findById(userId);
+    }
+    public void deleteId(String userId){
+        repository.deleteById(userId);
     }
 
 
