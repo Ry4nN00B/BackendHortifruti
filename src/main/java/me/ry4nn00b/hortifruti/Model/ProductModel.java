@@ -5,13 +5,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
-@Document(collation = "product")
+@Document(collection = "product")
 public class ProductModel {
 
     //Product Attribute's
     @Id
     private String id;
     private String name;
+    private String description;
     private Double price;
     private Integer amount;
     private String categoryId;
@@ -20,10 +21,11 @@ public class ProductModel {
 
     public ProductModel() {}
 
-    public ProductModel(String id, String name, Double price, Integer amount,
+    public ProductModel(String id, String name, String description, Double price, Integer amount,
                    String categoryId, String supplierId, LocalDate validity) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.price = price;
         this.amount = amount;
         this.categoryId = categoryId;
@@ -36,6 +38,8 @@ public class ProductModel {
     public void setId(String id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
     public Double getPrice() { return price; }
     public void setPrice(Double price) { this.price = price; }
     public Integer getAmount() { return amount; }

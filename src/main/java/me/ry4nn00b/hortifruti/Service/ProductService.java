@@ -3,6 +3,7 @@ package me.ry4nn00b.hortifruti.Service;
 import me.ry4nn00b.hortifruti.Model.ProductModel;
 import me.ry4nn00b.hortifruti.Repository.ICategoryRepository;
 import me.ry4nn00b.hortifruti.Repository.IProductRepository;
+import me.ry4nn00b.hortifruti.Repository.ISupplierRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,11 +15,13 @@ public class ProductService {
 
     private final IProductRepository repository;
     private final ICategoryRepository categoryRepository;
+    private final ISupplierRepository supplierRepository;
 
     //Method's
-    public ProductService(IProductRepository repository, ICategoryRepository categoryRepository) {
+    public ProductService(IProductRepository repository, ICategoryRepository categoryRepository, ISupplierRepository supplierRepository) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
+        this.supplierRepository = supplierRepository;
     }
     public Optional<ProductModel> productFindById(String id) {
         return repository.findById(id);
@@ -28,6 +31,7 @@ public class ProductService {
     }
     public ProductModel productSave(ProductModel product){
         categoryRepository.findById(product.getCategoryId()).orElseThrow(() -> new RuntimeException("Hortifruti Erro: Não foi possível encontrar esta categoria de produtos!"));
+        supplierRepository.findById(product.getSupplierId()).orElseThrow(() -> new RuntimeException("Hortifruti Erro: Não foi possível encontrar este fornecedor de produtos!"));
         return repository.save(product);
     }
     public void productDelete(String id){

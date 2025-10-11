@@ -3,7 +3,7 @@ package me.ry4nn00b.hortifruti.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collation = "user")
+@Document(collection = "user")
 public class UserModel {
 
     //User Attribute's
