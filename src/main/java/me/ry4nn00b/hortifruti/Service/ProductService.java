@@ -17,27 +17,35 @@ public class ProductService {
     private final ICategoryRepository categoryRepository;
     private final ISupplierRepository supplierRepository;
 
-    //Method's
     public ProductService(IProductRepository repository, ICategoryRepository categoryRepository, ISupplierRepository supplierRepository) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
         this.supplierRepository = supplierRepository;
     }
-    public Optional<ProductModel> productFindById(String id) {
-        return repository.findById(id);
-    }
+
+    //Get Product List
     public List<ProductModel> productList(){
         return repository.findAll();
     }
+
+    //Get Product By ID
+    public Optional<ProductModel> productFindById(String id) {
+        return repository.findById(id);
+    }
+
+    //Save Product
     public ProductModel productSave(ProductModel product){
         categoryRepository.findById(product.getCategoryId()).orElseThrow(() -> new RuntimeException("Hortifruti Erro: Não foi possível encontrar esta categoria de produtos!"));
         supplierRepository.findById(product.getSupplierId()).orElseThrow(() -> new RuntimeException("Hortifruti Erro: Não foi possível encontrar este fornecedor de produtos!"));
         return repository.save(product);
     }
+
+    //Delete Product
     public void productDelete(String id){
         repository.deleteById(id);
     }
 
+    //Stock Update
     public ProductModel updateStockAmount(String productID, int newAmount) {
         Optional<ProductModel> opt = repository.findById(productID);
         if (opt.isPresent()) {

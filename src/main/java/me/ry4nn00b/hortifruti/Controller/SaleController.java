@@ -17,17 +17,27 @@ public class SaleController {
         this.saleService = saleService;
     }
 
+    //ENDPOINT - TEST API
+    @GetMapping("/")
+    public String home() {
+        return "API DE VENDAS FUNCIONANDO!";
+    }
+
+    //ENDPOINT - List Sales
     @GetMapping
     public List<SaleModel> saleList() {
         return saleService.saleList();
     }
 
+    //ENDPOINT - Find by ID Sale
     @GetMapping("/{id}")
-    public ResponseEntity<SaleModel> findById(@PathVariable String saleId) {
-        return saleService.saleFindById(saleId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<SaleModel> findById(@PathVariable("id") String saleId) {
+        return saleService.saleFindById(saleId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    //Sale Register
+    //ENDPOINT - Create Sale
     @PostMapping
     public ResponseEntity<?> saleRegister(@RequestBody SaleModel sale) {
         try {
@@ -38,10 +48,38 @@ public class SaleController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable String saleId) {
-        saleService.saleDeleteId(saleId);
-        return ResponseEntity.noContent().build();
+    //ENDPOINT - Update Sale
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateSale(@PathVariable("id") String saleId, @RequestBody SaleModel updatedSale) {
+        try {
+            SaleModel updated = saleService.saleUpdate(saleId, updatedSale);
+            return ResponseEntity.ok(updated);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
+    //ENDPOINT - Delete Complete Sale
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") String saleId) {
+        try {
+            saleService.saleDeleteId(saleId);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    //ENDPOINT - Delete Item Sale
+    @DeleteMapping("/{saleId}/item/{productId}")
+    public ResponseEntity<?> removeItemFromSale(
+            @PathVariable String saleId,
+            @PathVariable String productId) {
+        try {
+            SaleModel updatedSale = saleService.removeItemFromSale(saleId, productId);
+            return ResponseEntity.ok(updatedSale);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
