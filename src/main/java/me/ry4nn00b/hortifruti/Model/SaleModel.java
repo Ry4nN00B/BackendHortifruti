@@ -1,5 +1,6 @@
 package me.ry4nn00b.hortifruti.Model;
 
+import me.ry4nn00b.hortifruti.Enum.SaleStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,16 +17,18 @@ public class SaleModel {
     private List<SaleItemModel> itens;
     private Double total;
     private String paymentMethod;
+    private SaleStatus status;
 
     public SaleModel() {}
 
-    public SaleModel(String id, LocalDateTime dateTime, String operatorId, List<SaleItemModel> itens, Double total, String paymentMethod) {
+    public SaleModel(String id, LocalDateTime dateTime, String operatorId, List<SaleItemModel> itens, Double total, String paymentMethod, SaleStatus status) {
         this.id = id;
         this.dateTime = dateTime;
         this.operatorId = operatorId;
         this.itens = itens;
         this.total = total;
         this.paymentMethod = paymentMethod;
+        this.status = status;
     }
 
     //Getter's and Setter's
@@ -46,4 +49,7 @@ public class SaleModel {
 
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
+
+    public SaleStatus getStatus() { return status; }
+    public void setStatus(SaleStatus status) { this.status = status; }
 }

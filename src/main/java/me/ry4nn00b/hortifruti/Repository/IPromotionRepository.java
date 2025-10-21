@@ -6,9 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IPromotionRepository extends MongoRepository<PromotionModel, String> {
-    List<PromotionModel> findByStartDate(LocalDate date);
-    List<PromotionModel> findByEndDate(LocalDate date);
+
+    List<PromotionModel> findByStartAndEndDate(LocalDate startDate, LocalDate endDate);
+    Optional<PromotionModel> findByProductIdStartAndEndDate(String productId, LocalDate start, LocalDate end);
+    boolean existsByProductIdAndEndDateAfter(String productId, LocalDate date);
+
 }

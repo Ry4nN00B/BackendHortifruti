@@ -1,21 +1,26 @@
 package me.ry4nn00b.hortifruti.Controller;
 
+import jakarta.validation.Valid;
+import me.ry4nn00b.hortifruti.DTOs.CategoryRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.CategoryResponseDTO;
+import me.ry4nn00b.hortifruti.Mapper.CategoryMapper;
 import me.ry4nn00b.hortifruti.Model.CategoryModel;
-import me.ry4nn00b.hortifruti.Service.CategoryService;
+import me.ry4nn00b.hortifruti.Service.Interface.ICategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/categorias")
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    private final ICategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
-    public CategoryController(CategoryService categoryService){
+    public CategoryController(ICategoryService categoryService, CategoryMapper categoryMapper){
         this.categoryService = categoryService;
+        this.categoryMapper = categoryMapper;
     }
 
     //ENDPOINT - TEST API
@@ -26,35 +31,46 @@ public class CategoryController {
 
     //ENDPOINT - Create Category
     @PostMapping
-    public ResponseEntity<CategoryModel> createCategory(@RequestBody CategoryModel category) {
-        CategoryModel saved = categoryService.categorySave(category);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<CategoryResponseDTO> createCategory(@Valid @RequestBody CategoryRequestDTO requestDTO) {
+
+        CategoryModel model = categoryMapper.toModel(requestDTO);
+        CategoryModel saved = categoryService.categorySave(model);
+        CategoryResponseDTO responseDTO = categoryMapper.toResponseDTO(saved);
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     //ENDPOINT - List Categories
     @GetMapping
-    public ResponseEntity<List<CategoryModel>> getAllCategories() {
+    public ResponseEntity<List<CategoryResponseDTO>> getAllCategories() {
         List<CategoryModel> categories = categoryService.categoryList();
-        return ResponseEntity.ok(categories);
+        List<CategoryResponseDTO> responseDTO = categories.stream().map(categoryMapper::toResponseDTO).toList();
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     //ENDPOINT - Find By ID Category
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryModel> getCategoryById(@PathVariable String id) {
-        Optional<CategoryModel> category = categoryService.categoryFindByID(id);
-        return category.map(ResponseEntity::ok)
+    public ResponseEntity<CategoryResponseDTO> getCategoryById(@PathVariable String id) {
+        return categoryService.categoryFindByID(id)
+                .map(categoryMapper::toResponseDTO)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     //ENDPOINT - Update Category
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryModel> updateCategory(@PathVariable String id, @RequestBody CategoryModel newCategory) {
+    public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable String id, @Valid @RequestBody CategoryRequestDTO requestDTO) {
+
         return categoryService.categoryFindByID(id)
-                .map(category -> {
-                    category.setName(newCategory.getName());
-                    category.setDescription(newCategory.getDescription());
-                    CategoryModel updated = categoryService.categorySave(category);
-                    return ResponseEntity.ok(updated);
+                .map(existing -> {
+                    if(requestDTO.getName() != null) existing.setName(requestDTO.getName());
+                    if(requestDTO.getDescription() != null) existing.setDescription(requestDTO.getDescription());
+
+                    CategoryModel updated = categoryService.categorySave(existing);
+                    CategoryResponseDTO responseDTO = categoryMapper.toResponseDTO(updated);
+
+                    return ResponseEntity.ok(responseDTO);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -62,11 +78,12 @@ public class CategoryController {
     //ENDPOINT - Delete Category
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable String id) {
-        if (categoryService.categoryFindByID(id).equals(id)) {
-            categoryService.categoryDelete(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        return categoryService.categoryFindByID(id)
+                .map(existing -> {
+                    categoryService.categoryDelete(id);
+                    return ResponseEntity.noContent().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

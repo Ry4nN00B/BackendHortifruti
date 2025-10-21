@@ -1,13 +1,10 @@
-package me.ry4nn00b.hortifruti.Model;
+package me.ry4nn00b.hortifruti.DTOs;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDate;
 
-@Document(collection = "product")
-public class ProductModel {
+public class ProductResponseDTO {
 
     //Product Attribute's
-    @Id
     private String id;
     private String name;
     private String description;
@@ -16,10 +13,9 @@ public class ProductModel {
     private String supplierId;
     private Boolean soldByWeight;
 
-    public ProductModel() {}
+    public ProductResponseDTO() {}
 
-    public ProductModel(String id, String name, String description, Double price,
-                   String categoryId, String supplierId, Boolean soldByWeight) {
+    public ProductResponseDTO(String id, String name, String description, Double price, String categoryId, String supplierId, Boolean soldByWeight){
         this.id = id;
         this.name = name;
         this.description = description;
@@ -50,5 +46,4 @@ public class ProductModel {
 
     public Boolean getSoldByWeight() { return soldByWeight; }
     public void setSoldByWeight(Boolean soldByWeight) { this.soldByWeight = soldByWeight; }
-
 }

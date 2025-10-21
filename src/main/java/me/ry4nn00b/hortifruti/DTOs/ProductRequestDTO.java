@@ -1,26 +1,37 @@
-package me.ry4nn00b.hortifruti.Model;
+package me.ry4nn00b.hortifruti.DTOs;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
-@Document(collection = "product")
-public class ProductModel {
+import java.time.LocalDate;
+
+public class ProductRequestDTO {
 
     //Product Attribute's
-    @Id
-    private String id;
+    @NotBlank(message = "Hortifruti Erro: O nome do produto é obrigatório.")
+    @Size(min = 3, max = 100, message = "Hortifruti Erro: O nome do produto deve ter entre 3 e 100 caracteres.")
     private String name;
+
+    @Size(max = 500, message = "Hortifruti Erro: A descrição pode ter no máximo 500 caracteres.")
     private String description;
+
+    @NotNull(message = "Hortifruti Erro: O preço é obrigatório.")
+    @Positive(message = "Hortifruti Erro: O preço deve ser positivo.")
     private Double price;
+
+    @NotBlank(message = "Hortifruti Erro: O ID da categoria é obrigatório.")
     private String categoryId;
+
+    @NotBlank(message = "Hortifruti Erro: O ID do fornecedor é obrigatório.")
     private String supplierId;
+
     private Boolean soldByWeight;
 
-    public ProductModel() {}
+    public ProductRequestDTO() {}
 
-    public ProductModel(String id, String name, String description, Double price,
-                   String categoryId, String supplierId, Boolean soldByWeight) {
-        this.id = id;
+    public ProductRequestDTO(String name, String description, Double price, String categoryId, String supplierId, Boolean soldByWeight){
         this.name = name;
         this.description = description;
         this.price = price;
@@ -30,9 +41,6 @@ public class ProductModel {
     }
 
     //Getter's and Setter's
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 

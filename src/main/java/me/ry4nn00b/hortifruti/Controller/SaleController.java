@@ -1,7 +1,7 @@
 package me.ry4nn00b.hortifruti.Controller;
 
 import me.ry4nn00b.hortifruti.Model.SaleModel;
-import me.ry4nn00b.hortifruti.Service.SaleService;
+import me.ry4nn00b.hortifruti.Service.Interface.ISaleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +11,9 @@ import java.util.List;
 @RequestMapping("/vendas")
 public class SaleController {
 
-    private final SaleService saleService;
+    private final ISaleService saleService;
 
-    public SaleController(SaleService saleService) {
+    public SaleController(ISaleService saleService) {
         this.saleService = saleService;
     }
 
@@ -43,6 +43,28 @@ public class SaleController {
         try {
             SaleModel saved = saleService.saleRegister(sale);
             return ResponseEntity.ok(saved);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    //ENDPOINT - Confirm Payment
+    @PatchMapping("/{id}/confirmar")
+    public ResponseEntity<?> confirmPayment(@PathVariable("id") String saleId) {
+        try {
+            SaleModel confirmedSale = saleService.confirmPayment(saleId);
+            return ResponseEntity.ok(confirmedSale);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    //ENDPOINT - Cancel Sale
+    @PutMapping("/{id}/cancelar")
+    public ResponseEntity<?> cancelSale(@PathVariable("id") String saleId) {
+        try {
+            SaleModel cancelledSale = saleService.cancelSale(saleId);
+            return ResponseEntity.ok(cancelledSale);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

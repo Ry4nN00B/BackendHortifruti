@@ -1,7 +1,11 @@
 package me.ry4nn00b.hortifruti.Controller;
 
+import jakarta.validation.Valid;
+import me.ry4nn00b.hortifruti.DTOs.ProductRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.ProductResponseDTO;
+import me.ry4nn00b.hortifruti.Mapper.ProductMapper;
 import me.ry4nn00b.hortifruti.Model.ProductModel;
-import me.ry4nn00b.hortifruti.Service.ProductService;
+import me.ry4nn00b.hortifruti.Service.Interface.IProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +15,12 @@ import java.util.List;
 @RequestMapping("/produtos")
 public class ProductController {
 
-    private final ProductService productService;
+    private final IProductService productService;
+    private final ProductMapper productMapper;
 
-    public ProductController(ProductService productService) {
+    public ProductController(IProductService productService, ProductMapper productMapper) {
         this.productService = productService;
+        this.productMapper = productMapper;
     }
 
     //ENDPOINT - TEST API
@@ -25,39 +31,49 @@ public class ProductController {
 
     //ENDPOINT - Create Product
     @PostMapping
-    public ResponseEntity<ProductModel> createProduct(@RequestBody ProductModel product) {
-        ProductModel saved = productService.productSave(product);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO requestDTO) {
+
+        ProductModel model = productMapper.toModel(requestDTO);
+        ProductModel saved = productService.productSave(model);
+        ProductResponseDTO responseDTO = productMapper.toResponseDTO(saved);
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     //ENDPOINT - List Product's
     @GetMapping
-    public ResponseEntity<List<ProductModel>> getAllProducts() {
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
         List<ProductModel> products = productService.productList();
-        return ResponseEntity.ok(products);
+        List<ProductResponseDTO> responseDTOs = products.stream().map(productMapper::toResponseDTO).toList();
+
+        return ResponseEntity.ok(responseDTOs);
     }
 
     //ENDPOINT - Find By ID Product
     @GetMapping("/{id}")
-    public ResponseEntity<ProductModel> getProductById(@PathVariable String id) {
+    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable String id) {
         return productService.productFindById(id)
+                .map(productMapper::toResponseDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     //ENDPOINT - Update Product
     @PutMapping("/{id}")
-    public ResponseEntity<ProductModel> updateProduct(@PathVariable String id, @RequestBody ProductModel updatedProduct) {
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable String id, @Valid @RequestBody ProductRequestDTO requestDTO) {
+
         return productService.productFindById(id)
-                .map(product -> {
-                    product.setName(updatedProduct.getName());
-                    product.setDescription(updatedProduct.getDescription());
-                    product.setPrice(updatedProduct.getPrice());
-                    product.setCategoryId(updatedProduct.getCategoryId());
-                    product.setSupplierId(updatedProduct.getSupplierId());
-                    product.setValidity(updatedProduct.getValidity());
-                    ProductModel updated = productService.productSave(product);
-                    return ResponseEntity.ok(updated);
+                .map(existing -> {
+                    if(requestDTO.getName() != null) existing.setName(requestDTO.getName());
+                    if(requestDTO.getDescription() != null) existing.setDescription(requestDTO.getDescription());
+                    if(requestDTO.getPrice() != null) existing.setPrice(requestDTO.getPrice());
+                    if(requestDTO.getCategoryId() != null) existing.setCategoryId(requestDTO.getCategoryId());
+                    if(requestDTO.getSupplierId() != null) existing.setSupplierId(requestDTO.getSupplierId());
+
+                    ProductModel updated = productService.productSave(existing);
+                    ProductResponseDTO responseDTO = productMapper.toResponseDTO(updated);
+
+                    return ResponseEntity.ok(responseDTO);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -65,11 +81,12 @@ public class ProductController {
     //ENDPOINT - Delete Product
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
-        if (productService.productFindById(id).isPresent()) {
-            productService.productDelete(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        return productService.productFindById(id)
+                .map(existing -> {
+                    productService.productDelete(id);
+                    return ResponseEntity.noContent().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }
