@@ -7,7 +7,6 @@ import me.ry4nn00b.hortifruti.Repository.ISupplierRepository;
 import me.ry4nn00b.hortifruti.Service.Interface.IProductService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

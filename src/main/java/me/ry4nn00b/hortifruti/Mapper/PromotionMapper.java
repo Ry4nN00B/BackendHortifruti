@@ -22,8 +22,10 @@ public class PromotionMapper {
 
     //PromotionModel -> PromotionResponseDTO
     public PromotionResponseDTO toResponseDTO(PromotionModel model) {
+
         PromotionResponseDTO dto = modelMapper.map(model, PromotionResponseDTO.class);
         dto.setActive(model.getEndDate().isAfter(java.time.LocalDate.now()));
+
         return dto;
     }
 }

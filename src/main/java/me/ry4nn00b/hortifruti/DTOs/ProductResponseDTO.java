@@ -1,7 +1,5 @@
 package me.ry4nn00b.hortifruti.DTOs;
 
-import java.time.LocalDate;
-
 public class ProductResponseDTO {
 
     //Product Attribute's

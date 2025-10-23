@@ -61,8 +61,7 @@ public class PromotionController {
 
     //ENDPOINT - Update Promotion
     @PutMapping("/{id}")
-    public ResponseEntity<PromotionResponseDTO> updatePromotion(@PathVariable String id,
-                                                                @Valid @RequestBody PromotionRequestDTO requestDTO) {
+    public ResponseEntity<PromotionResponseDTO> updatePromotion(@PathVariable String id, @Valid @RequestBody PromotionRequestDTO requestDTO) {
         return promotionService.productFindById(id)
                 .map(existing -> {
                     if(requestDTO.getProductId() != null) existing.setProductId(requestDTO.getProductId());

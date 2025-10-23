@@ -17,11 +17,27 @@ public class StockMapper {
 
     //StockRequestDTO -> StockModel
     public StockModel toModel(StockRequestDTO dto) {
-        return modelMapper.map(dto, StockModel.class);
+
+        StockModel model = new StockModel();
+        model.setProductId(dto.getProductId());
+        model.setAmount(dto.getAmount());
+        model.setValidity(dto.getValidity());
+
+        return model;
+
     }
 
     //StockModel -> StockResponseDTO
     public StockResponseDTO toResponseDTO(StockModel model) {
-        return modelMapper.map(model, StockResponseDTO.class);
+
+        StockResponseDTO dto = new StockResponseDTO();
+        dto.setId(model.getId());
+        dto.setProductId(model.getProductId());
+        dto.setAmount(model.getAmount());
+        dto.setEntryDate(model.getEntryDate());
+        dto.setValidity(model.getValidity());
+
+        return dto;
+
     }
 }

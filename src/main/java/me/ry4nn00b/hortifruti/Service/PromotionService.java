@@ -22,7 +22,7 @@ public class PromotionService implements IPromotionService {
     @Override
     public Double applyPromotion(String productId, Double originalPrice) {
         LocalDate today = LocalDate.now();
-        Optional<PromotionModel> promotion = repository.findByProductIdStartAndEndDate(productId, today, today);
+        Optional<PromotionModel> promotion = repository.findActivePromotionByProduct(productId, today, today);
 
         if (promotion.isPresent()) {
             PromotionModel promo = promotion.get();
@@ -40,7 +40,7 @@ public class PromotionService implements IPromotionService {
     @Override
     public List<PromotionModel> promotionActiveList() {
         LocalDate today = LocalDate.now();
-        return repository.findByStartAndEndDate(today, today);
+        return repository.findActivePromotions(today, today);
     }
 
     //Get Promotion By ID

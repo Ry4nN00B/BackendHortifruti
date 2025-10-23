@@ -43,6 +43,7 @@ public class StockService implements IStockService {
     //Save Stock
     @Override
     public StockModel stockSave(StockModel stock) {
+        stock.setEntryDate(LocalDate.now());
         return repository.save(stock);
     }
 

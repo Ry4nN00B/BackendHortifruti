@@ -18,8 +18,7 @@ public class ProductModel {
 
     public ProductModel() {}
 
-    public ProductModel(String id, String name, String description, Double price,
-                   String categoryId, String supplierId, Boolean soldByWeight) {
+    public ProductModel(String id, String name, String description, Double price, String categoryId, String supplierId, Boolean soldByWeight) {
         this.id = id;
         this.name = name;
         this.description = description;

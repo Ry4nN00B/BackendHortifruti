@@ -136,7 +136,7 @@ public class SaleService implements ISaleService {
                 newBatch.setProductId(item.getProductId());
                 newBatch.setAmount(item.getAmount());
                 newBatch.setEntryDate(LocalDate.now());
-                newBatch.setValidity(null); // ou definir regra para validade
+                newBatch.setValidity(null);
                 stockService.stockSave(newBatch);
             }
         }

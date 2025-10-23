@@ -17,6 +17,7 @@ public class ProductMapper {
 
     //ProductRequestDTO -> ProductModel
     public ProductModel toModel(ProductRequestDTO dto) {
+
         ProductModel model = new ProductModel();
         model.setName(dto.getName());
         model.setDescription(dto.getDescription());
@@ -24,11 +25,13 @@ public class ProductMapper {
         model.setCategoryId(dto.getCategoryId());
         model.setSupplierId(dto.getSupplierId());
         model.setSoldByWeight(dto.getSoldByWeight());
+
         return model;
     }
 
     //ProductModel -> ProductResponseDTO
     public ProductResponseDTO toResponseDTO(ProductModel model) {
+
         ProductResponseDTO dto = new ProductResponseDTO();
         dto.setId(model.getId());
         dto.setName(model.getName());
@@ -37,6 +40,7 @@ public class ProductMapper {
         dto.setCategoryId(model.getCategoryId());
         dto.setSupplierId(model.getSupplierId());
         dto.setSoldByWeight(model.getSoldByWeight());
+
         return dto;
     }
 }

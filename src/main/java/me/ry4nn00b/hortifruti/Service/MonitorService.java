@@ -18,11 +18,11 @@ public class MonitorService {
     }
 
     //Products with expiration dates of up to 'X' days
-    public List<ProductModel> productsCloseToExpirationDate(int days) {
+    /*public List<ProductModel> productsCloseToExpirationDate(int days) {
         LocalDate limit = LocalDate.now().plusDays(days);
         return productService.productList().stream()
                 .filter(p -> p.getValidity() != null && !p.getValidity().isAfter(limit))
                 .collect(Collectors.toList());
-    }
+    }*/
 
 }

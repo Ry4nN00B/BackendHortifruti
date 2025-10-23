@@ -80,8 +80,8 @@ public class StockController {
 
     //ENDPOINT - Stock Near Expiration
     @GetMapping("/proximos-a-vencer")
-    public List<StockResponseDTO> stockNearExpiration(@RequestParam int dias) {
-        return stockService.stockNearExpiration(dias)
+    public List<StockResponseDTO> stockNearExpiration(@RequestParam int days) {
+        return stockService.stockNearExpiration(days)
                 .stream()
                 .map(stockMapper::toResponseDTO)
                 .collect(Collectors.toList());

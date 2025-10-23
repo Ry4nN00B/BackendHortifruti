@@ -18,7 +18,8 @@ public class StockModel {
 
     public StockModel() {}
 
-    public StockModel(String productId, Double amount, LocalDate entryDate, LocalDate validity) {
+    public StockModel(String id, String productId, Double amount, LocalDate entryDate, LocalDate validity) {
+        this.id = id;
         this.productId = productId;
         this.amount = amount;
         this.entryDate = entryDate;

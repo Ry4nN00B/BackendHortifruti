@@ -94,9 +94,7 @@ public class SaleController {
 
     //ENDPOINT - Delete Item Sale
     @DeleteMapping("/{saleId}/item/{productId}")
-    public ResponseEntity<?> removeItemFromSale(
-            @PathVariable String saleId,
-            @PathVariable String productId) {
+    public ResponseEntity<?> removeItemFromSale(@PathVariable String saleId, @PathVariable String productId) {
         try {
             SaleModel updatedSale = saleService.removeItemFromSale(saleId, productId);
             return ResponseEntity.ok(updatedSale);
