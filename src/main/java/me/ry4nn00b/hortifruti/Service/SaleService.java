@@ -11,6 +11,8 @@ import me.ry4nn00b.hortifruti.Service.Interface.ISaleService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -67,14 +69,18 @@ public class SaleService implements ISaleService {
                     ));
 
             double priceWithPromotion = promotionService.applyPromotion(product.getId(), product.getPrice());
-            item.setUnitPrice(priceWithPromotion);
+            BigDecimal roundedTotal = new BigDecimal(priceWithPromotion).setScale(2, RoundingMode.HALF_UP);
+            item.setUnitPrice(roundedTotal.doubleValue());
         }
 
         //Calculate Total
         double total = sale.getItens().stream()
                 .mapToDouble(i -> i.getAmount() * i.getUnitPrice())
                 .sum();
-        sale.setTotal(total);
+
+        //Round total to 2 decimal places
+        BigDecimal roundedTotal = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
+        sale.setTotal(roundedTotal.doubleValue());
 
         sale.setDateTime(LocalDateTime.now());
         sale.setStatus(SaleStatus.PENDING);
@@ -154,9 +160,18 @@ public class SaleService implements ISaleService {
 
         if (newSale.getItens() != null && !newSale.getItens().isEmpty()) {
             existing.setItens(newSale.getItens());
+
+            //Recalculate and round total automatically
+            double total = existing.getItens().stream()
+                    .mapToDouble(i -> i.getAmount() * i.getUnitPrice())
+                    .sum();
+            BigDecimal roundedTotal = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP);
+            existing.setTotal(roundedTotal.doubleValue());
         }
+
         if (newSale.getTotal() != null) {
-            existing.setTotal(newSale.getTotal());
+            BigDecimal roundedTotal = new BigDecimal(newSale.getTotal()).setScale(2, RoundingMode.HALF_UP);
+            existing.setTotal(roundedTotal.doubleValue());
         }
 
         existing.setDateTime(LocalDateTime.now());

@@ -1,9 +1,10 @@
 package me.ry4nn00b.hortifruti.Controller;
 
 import jakarta.validation.Valid;
-import me.ry4nn00b.hortifruti.DTOs.ProductRequestDTO;
-import me.ry4nn00b.hortifruti.DTOs.ProductResponseDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.ProductRequestDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.ProductResponseDTO;
 import me.ry4nn00b.hortifruti.Mapper.ProductMapper;
+import me.ry4nn00b.hortifruti.Model.DTOs.ProductUpdateDTO;
 import me.ry4nn00b.hortifruti.Model.ProductModel;
 import me.ry4nn00b.hortifruti.Service.Interface.IProductService;
 import org.springframework.http.ResponseEntity;
@@ -60,15 +61,15 @@ public class ProductController {
 
     //ENDPOINT - Update Product
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable String id, @Valid @RequestBody ProductRequestDTO requestDTO) {
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable String id, @Valid @RequestBody ProductUpdateDTO updateDTO) {
 
         return productService.productFindById(id)
                 .map(existing -> {
-                    if(requestDTO.getName() != null) existing.setName(requestDTO.getName());
-                    if(requestDTO.getDescription() != null) existing.setDescription(requestDTO.getDescription());
-                    if(requestDTO.getPrice() != null) existing.setPrice(requestDTO.getPrice());
-                    if(requestDTO.getCategoryId() != null) existing.setCategoryId(requestDTO.getCategoryId());
-                    if(requestDTO.getSupplierId() != null) existing.setSupplierId(requestDTO.getSupplierId());
+                    if(updateDTO.getName() != null) existing.setName(updateDTO.getName());
+                    if(updateDTO.getDescription() != null) existing.setDescription(updateDTO.getDescription());
+                    if(updateDTO.getPrice() != null) existing.setPrice(updateDTO.getPrice());
+                    if(updateDTO.getCategoryId() != null) existing.setCategoryId(updateDTO.getCategoryId());
+                    if(updateDTO.getSupplierId() != null) existing.setSupplierId(updateDTO.getSupplierId());
 
                     ProductModel updated = productService.productSave(existing);
                     ProductResponseDTO responseDTO = productMapper.toResponseDTO(updated);

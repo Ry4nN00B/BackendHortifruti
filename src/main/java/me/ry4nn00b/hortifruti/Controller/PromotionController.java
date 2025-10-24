@@ -1,9 +1,10 @@
 package me.ry4nn00b.hortifruti.Controller;
 
 import jakarta.validation.Valid;
-import me.ry4nn00b.hortifruti.DTOs.PromotionRequestDTO;
-import me.ry4nn00b.hortifruti.DTOs.PromotionResponseDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.PromotionRequestDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.PromotionResponseDTO;
 import me.ry4nn00b.hortifruti.Mapper.PromotionMapper;
+import me.ry4nn00b.hortifruti.Model.DTOs.PromotionUpdateDTO;
 import me.ry4nn00b.hortifruti.Model.PromotionModel;
 import me.ry4nn00b.hortifruti.Service.Interface.IPromotionService;
 import org.springframework.http.ResponseEntity;
@@ -61,17 +62,18 @@ public class PromotionController {
 
     //ENDPOINT - Update Promotion
     @PutMapping("/{id}")
-    public ResponseEntity<PromotionResponseDTO> updatePromotion(@PathVariable String id, @Valid @RequestBody PromotionRequestDTO requestDTO) {
+    public ResponseEntity<PromotionResponseDTO> updatePromotion(@PathVariable String id, @Valid @RequestBody PromotionUpdateDTO updateDTO) {
         return promotionService.productFindById(id)
                 .map(existing -> {
-                    if(requestDTO.getProductId() != null) existing.setProductId(requestDTO.getProductId());
-                    if(requestDTO.getType() != null) existing.setType(requestDTO.getType());
-                    if(requestDTO.getValue() != null) existing.setValue(requestDTO.getValue());
-                    if(requestDTO.getStartDate() != null) existing.setStartDate(requestDTO.getStartDate());
-                    if(requestDTO.getEndDate() != null) existing.setEndDate(requestDTO.getEndDate());
+                    if(updateDTO.getProductId() != null) existing.setProductId(updateDTO.getProductId());
+                    if(updateDTO.getType() != null) existing.setType(updateDTO.getType());
+                    if(updateDTO.getValue() != null) existing.setValue(updateDTO.getValue());
+                    if(updateDTO.getStartDate() != null) existing.setStartDate(updateDTO.getStartDate());
+                    if(updateDTO.getEndDate() != null) existing.setEndDate(updateDTO.getEndDate());
 
                     PromotionModel updated = promotionService.promotionSave(existing);
                     PromotionResponseDTO responseDTO = promotionMapper.toResponseDTO(updated);
+
                     return ResponseEntity.ok(responseDTO);
                 })
                 .orElse(ResponseEntity.notFound().build());

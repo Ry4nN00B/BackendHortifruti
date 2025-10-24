@@ -1,10 +1,11 @@
 package me.ry4nn00b.hortifruti.Controller;
 
 import jakarta.validation.Valid;
-import me.ry4nn00b.hortifruti.DTOs.CategoryRequestDTO;
-import me.ry4nn00b.hortifruti.DTOs.CategoryResponseDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.CategoryRequestDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.CategoryResponseDTO;
 import me.ry4nn00b.hortifruti.Mapper.CategoryMapper;
 import me.ry4nn00b.hortifruti.Model.CategoryModel;
+import me.ry4nn00b.hortifruti.Model.DTOs.CategoryUpdateDTO;
 import me.ry4nn00b.hortifruti.Service.Interface.ICategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,12 +61,12 @@ public class CategoryController {
 
     //ENDPOINT - Update Category
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable String id, @Valid @RequestBody CategoryRequestDTO requestDTO) {
+    public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable String id, @Valid @RequestBody CategoryUpdateDTO updateDTO) {
 
         return categoryService.categoryFindByID(id)
                 .map(existing -> {
-                    if(requestDTO.getName() != null) existing.setName(requestDTO.getName());
-                    if(requestDTO.getDescription() != null) existing.setDescription(requestDTO.getDescription());
+                    if(updateDTO.getName() != null) existing.setName(updateDTO.getName());
+                    if(updateDTO.getDescription() != null) existing.setDescription(updateDTO.getDescription());
 
                     CategoryModel updated = categoryService.categorySave(existing);
                     CategoryResponseDTO responseDTO = categoryMapper.toResponseDTO(updated);

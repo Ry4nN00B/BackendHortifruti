@@ -1,9 +1,10 @@
 package me.ry4nn00b.hortifruti.Controller;
 
 import jakarta.validation.Valid;
-import me.ry4nn00b.hortifruti.DTOs.SupplierRequestDTO;
-import me.ry4nn00b.hortifruti.DTOs.SupplierResponseDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.SupplierRequestDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.SupplierResponseDTO;
 import me.ry4nn00b.hortifruti.Mapper.SupplierMapper;
+import me.ry4nn00b.hortifruti.Model.DTOs.SupplierUpdateDTO;
 import me.ry4nn00b.hortifruti.Model.SupplierModel;
 import me.ry4nn00b.hortifruti.Service.Interface.ISupplierService;
 import org.springframework.http.ResponseEntity;
@@ -59,15 +60,16 @@ public class SupplierController {
     }
 
     //ENDPOINT - Update Supplier
-    public ResponseEntity<SupplierResponseDTO> updateSupplier(@PathVariable String id, @Valid @RequestBody SupplierRequestDTO requestDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<SupplierResponseDTO> updateSupplier(@PathVariable String id, @Valid @RequestBody SupplierUpdateDTO updateDTO) {
 
         return supplierService.supplierFindById(id)
                 .map(existing -> {
-                    if(requestDTO.getName() != null) existing.setName(requestDTO.getName());
-                    if(requestDTO.getDescription() != null) existing.setDescription(requestDTO.getDescription());
-                    if(requestDTO.getEmail() != null) existing.setEmail(requestDTO.getEmail());
-                    if(requestDTO.getPhoneNumber() != null) existing.setPhoneNumber(requestDTO.getPhoneNumber());
-                    if(requestDTO.getCnpj() != null) existing.setCnpj(requestDTO.getCnpj());
+                    if(updateDTO.getName() != null) existing.setName(updateDTO.getName());
+                    if(updateDTO.getDescription() != null) existing.setDescription(updateDTO.getDescription());
+                    if(updateDTO.getEmail() != null) existing.setEmail(updateDTO.getEmail());
+                    if(updateDTO.getPhoneNumber() != null) existing.setPhoneNumber(updateDTO.getPhoneNumber());
+                    if(updateDTO.getCnpj() != null) existing.setCnpj(updateDTO.getCnpj());
 
                     SupplierModel updated = supplierService.supplierSave(existing);
                     SupplierResponseDTO responseDTO = supplierMapper.toResponseDTO(updated);

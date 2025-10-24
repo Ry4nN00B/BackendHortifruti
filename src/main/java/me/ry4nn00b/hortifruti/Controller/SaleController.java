@@ -60,7 +60,7 @@ public class SaleController {
     }
 
     //ENDPOINT - Cancel Sale
-    @PutMapping("/{id}/cancelar")
+    @PatchMapping("/{id}/cancelar")
     public ResponseEntity<?> cancelSale(@PathVariable("id") String saleId) {
         try {
             SaleModel cancelledSale = saleService.cancelSale(saleId);

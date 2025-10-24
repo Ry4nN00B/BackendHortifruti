@@ -1,4 +1,4 @@
-package me.ry4nn00b.hortifruti.DTOs;
+package me.ry4nn00b.hortifruti.Model.DTOs;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

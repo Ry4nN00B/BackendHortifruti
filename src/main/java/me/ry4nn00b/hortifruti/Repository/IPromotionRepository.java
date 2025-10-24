@@ -22,4 +22,5 @@ public interface IPromotionRepository extends MongoRepository<PromotionModel, St
 
     boolean existsByProductIdAndEndDateAfter(String productId, LocalDate date);
 
+    List<PromotionModel> findByProductIdAndEndDateAfter(String productId, LocalDate startDate);
 }

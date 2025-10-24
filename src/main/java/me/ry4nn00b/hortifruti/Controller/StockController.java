@@ -1,7 +1,7 @@
 package me.ry4nn00b.hortifruti.Controller;
 
-import me.ry4nn00b.hortifruti.DTOs.StockRequestDTO;
-import me.ry4nn00b.hortifruti.DTOs.StockResponseDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.StockRequestDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.StockResponseDTO;
 import me.ry4nn00b.hortifruti.Mapper.StockMapper;
 import me.ry4nn00b.hortifruti.Model.StockModel;
 import me.ry4nn00b.hortifruti.Service.Interface.IStockService;
