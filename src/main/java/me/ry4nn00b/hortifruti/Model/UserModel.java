@@ -1,7 +1,10 @@
 package me.ry4nn00b.hortifruti.Model;
 
+import me.ry4nn00b.hortifruti.Enum.Role;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Set;
 
 @Document(collection = "user")
 public class UserModel {
@@ -12,17 +15,17 @@ public class UserModel {
     private String name;
     private String email;
     private String password;
-    private String function;
+    private Set<Role> roles;
 
     public UserModel(){}
 
-    public UserModel(String id, String name, String email, String password, String function){
+    public UserModel(String id, String name, String email, String password, Set<Role> roles){
 
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.function = function;
+        this.roles = roles;
 
     }
 
@@ -55,11 +58,11 @@ public class UserModel {
         this.password = password;
     }
 
-    public String getFunction() {
-        return function;
+    public Set<Role> getRoles() {
+        return roles;
     }
-    public void setFunction(String function) {
-        this.function = function;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
 }

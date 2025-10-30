@@ -57,10 +57,10 @@ public class PromotionService implements IPromotionService {
             throw new IllegalArgumentException("A data de início deve ser antes da data de término.");
         }
 
-        // Verifica se existe outra promoção ativa para o mesmo produto
+        //Check if there is another active promotion for the same product
         List<PromotionModel> conflicts = repository.findByProductIdAndEndDateAfter(p.getProductId(), p.getStartDate());
         boolean hasConflict = conflicts.stream()
-                .anyMatch(existing -> !existing.getId().equals(p.getId())); // ignora a própria promoção
+                .anyMatch(existing -> !existing.getId().equals(p.getId()));
 
         if (hasConflict) {
             throw new IllegalArgumentException("Já existe uma promoção ativa para este produto nesse período.");

@@ -1,50 +1,82 @@
 package me.ry4nn00b.hortifruti.Controller;
 
-import me.ry4nn00b.hortifruti.Model.UserModel;
-import me.ry4nn00b.hortifruti.Service.UserService;
+import jakarta.validation.Valid;
+import me.ry4nn00b.hortifruti.Mapper.UserMapper;
+import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.LoginRequestDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.LoginResponseDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.UserRequestDTO;
+import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.UserResponseDTO;
+import me.ry4nn00b.hortifruti.Service.Interface.IUserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UserController {
 
-    private final UserService userService;
+    private final IUserService userService;
+    private final UserMapper userMapper;
 
-    public UserController(UserService userService){
+    public UserController(IUserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
-    //Register Method
+    //ENDPOINT - TEST API
+    @GetMapping("/")
+    public String home() {
+        return "API DE USUÁRIOS FUNCIONANDO!";
+    }
+
+    //ENDPOINT - Register User
     @PostMapping("/registrar")
-    public ResponseEntity<UserModel> register(@RequestBody UserModel user){
-        return ResponseEntity.ok(userService.register(user));
+    public ResponseEntity<UserResponseDTO> register(
+            @Valid @RequestBody UserRequestDTO requestDTO,
+            @RequestHeader("Authorization") String authHeader) {
+
+        //Extract Token Header
+        String token = authHeader.replace("Bearer ", "");
+
+        //Send Token to Service
+        UserResponseDTO responseDTO = userService.register(requestDTO, token);
+        return ResponseEntity.ok(responseDTO);
     }
 
-    //Login Method
+    //ENDPOINT - Login User
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
-        Optional<UserModel> user = userService.authentic(email, password);
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get());
-        }
-        return ResponseEntity.status(401).body("Email ou senha inválidos!");
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO requestDTO) {
+        LoginResponseDTO responseDTO = userService.login(requestDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
-    //Method's after logging
+    //ENDPOINT - Get User List
+    @GetMapping
+    @PreAuthorize("hasRole('GERENTE')")
+    public ResponseEntity<List<UserResponseDTO>> getAllUser() {
+        List<UserResponseDTO> users = userService.listAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    //ENDPOINT - Get User By ID
     @GetMapping("/{id}")
-    public ResponseEntity<UserModel> findById(@PathVariable String userId){
-        return userService.findById(userId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable String id) {
+        return userService.findUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    //ENDPOINT - Delete User By ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteId(@PathVariable String userId){
-        userService.deleteId(userId);
-        return ResponseEntity.noContent().build();
+    @PreAuthorize("hasRole('GERENTE')")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+        return userService.findUserById(id)
+                .map(existing -> {
+                    userService.deleteUser(id);
+                    return ResponseEntity.noContent().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
-
-
-
 }
