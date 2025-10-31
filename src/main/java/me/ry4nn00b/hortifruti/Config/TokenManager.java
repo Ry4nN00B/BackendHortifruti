@@ -44,7 +44,7 @@ public class TokenManager {
             parseClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            System.out.println("❌ Token inválido: " + e.getMessage());
+            System.out.println("Hortifruti Erro: Token inválido: " + e.getMessage());
             return false;
         }
     }
