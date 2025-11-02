@@ -1,11 +1,10 @@
 package me.ry4nn00b.hortifruti.Controller;
 
 import jakarta.validation.Valid;
-import me.ry4nn00b.hortifruti.Mapper.UserMapper;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.LoginRequestDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.LoginResponseDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.UserRequestDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.UserResponseDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.LoginRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.LoginResponseDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.UserRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.UserResponseDTO;
 import me.ry4nn00b.hortifruti.Service.Interface.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,15 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/auth")
 public class UserController {
 
     private final IUserService userService;
-    private final UserMapper userMapper;
 
-    public UserController(IUserService userService, UserMapper userMapper) {
+    public UserController(IUserService userService) {
         this.userService = userService;
-        this.userMapper = userMapper;
     }
 
     //ENDPOINT - TEST API
@@ -31,11 +28,27 @@ public class UserController {
         return "API DE USUÁRIOS FUNCIONANDO!";
     }
 
+    //ENDPOINT - Get User List
+    @GetMapping
+    @PreAuthorize("hasAuthority('GERENTE')")
+    public ResponseEntity<List<UserResponseDTO>> getAllUser() {
+        List<UserResponseDTO> users = userService.listAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    //ENDPOINT - Get User By ID
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('GERENTE')")
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable String id) {
+        return userService.findUserById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     //ENDPOINT - Register User
     @PostMapping("/registrar")
-    public ResponseEntity<UserResponseDTO> register(
-            @Valid @RequestBody UserRequestDTO requestDTO,
-            @RequestHeader("Authorization") String authHeader) {
+    @PreAuthorize("hasAuthority('GERENTE')")
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRequestDTO requestDTO, @RequestHeader("Authorization") String authHeader) {
 
         //Extract Token Header
         String token = authHeader.replace("Bearer ", "");
@@ -52,25 +65,9 @@ public class UserController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    //ENDPOINT - Get User List
-    @GetMapping
-    @PreAuthorize("hasRole('GERENTE')")
-    public ResponseEntity<List<UserResponseDTO>> getAllUser() {
-        List<UserResponseDTO> users = userService.listAllUsers();
-        return ResponseEntity.ok(users);
-    }
-
-    //ENDPOINT - Get User By ID
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable String id) {
-        return userService.findUserById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     //ENDPOINT - Delete User By ID
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('GERENTE')")
+    @PreAuthorize("hasAuthority('GERENTE')")
     public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         return userService.findUserById(id)
                 .map(existing -> {

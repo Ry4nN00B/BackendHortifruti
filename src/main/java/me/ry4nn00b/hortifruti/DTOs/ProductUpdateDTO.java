@@ -1,20 +1,20 @@
-package me.ry4nn00b.hortifruti.Model.DTOs;
+package me.ry4nn00b.hortifruti.DTOs;
 
-public class ProductResponseDTO {
+import java.math.BigDecimal;
+
+public class ProductUpdateDTO {
 
     //Product Attribute's
-    private String id;
     private String name;
     private String description;
-    private Double price;
+    private BigDecimal price;
     private String categoryId;
     private String supplierId;
     private Boolean soldByWeight;
 
-    public ProductResponseDTO() {}
+    public ProductUpdateDTO() {}
 
-    public ProductResponseDTO(String id, String name, String description, Double price, String categoryId, String supplierId, Boolean soldByWeight){
-        this.id = id;
+    public ProductUpdateDTO(String name, String description, BigDecimal price, String categoryId, String supplierId, Boolean soldByWeight){
         this.name = name;
         this.description = description;
         this.price = price;
@@ -24,17 +24,14 @@ public class ProductResponseDTO {
     }
 
     //Getter's and Setter's
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public Double getPrice() { return price; }
-    public void setPrice(Double price) { this.price = price; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 
     public String getCategoryId() { return categoryId; }
     public void setCategoryId(String categoryId) { this.categoryId = categoryId; }
@@ -44,4 +41,5 @@ public class ProductResponseDTO {
 
     public Boolean getSoldByWeight() { return soldByWeight; }
     public void setSoldByWeight(Boolean soldByWeight) { this.soldByWeight = soldByWeight; }
+
 }

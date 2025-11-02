@@ -1,9 +1,11 @@
-package me.ry4nn00b.hortifruti.Model.DTOs;
+package me.ry4nn00b.hortifruti.DTOs;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.math.BigDecimal;
 
 public class ProductRequestDTO {
 
@@ -17,7 +19,7 @@ public class ProductRequestDTO {
 
     @NotNull(message = "Hortifruti Erro: O preço é obrigatório.")
     @Positive(message = "Hortifruti Erro: O preço deve ser positivo.")
-    private Double price;
+    private BigDecimal price;
 
     @NotBlank(message = "Hortifruti Erro: O ID da categoria é obrigatório.")
     private String categoryId;
@@ -29,7 +31,7 @@ public class ProductRequestDTO {
 
     public ProductRequestDTO() {}
 
-    public ProductRequestDTO(String name, String description, Double price, String categoryId, String supplierId, Boolean soldByWeight){
+    public ProductRequestDTO(String name, String description, BigDecimal price, String categoryId, String supplierId, Boolean soldByWeight){
         this.name = name;
         this.description = description;
         this.price = price;
@@ -45,8 +47,8 @@ public class ProductRequestDTO {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public Double getPrice() { return price; }
-    public void setPrice(Double price) { this.price = price; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 
     public String getCategoryId() { return categoryId; }
     public void setCategoryId(String categoryId) { this.categoryId = categoryId; }

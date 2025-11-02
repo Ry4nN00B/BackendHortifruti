@@ -1,7 +1,7 @@
 package me.ry4nn00b.hortifruti.Mapper;
 
-import me.ry4nn00b.hortifruti.Model.DTOs.CategoryRequestDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.CategoryResponseDTO;
+import me.ry4nn00b.hortifruti.DTOs.CategoryRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.CategoryResponseDTO;
 import me.ry4nn00b.hortifruti.Model.CategoryModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

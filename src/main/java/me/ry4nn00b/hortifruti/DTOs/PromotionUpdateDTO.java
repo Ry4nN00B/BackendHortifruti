@@ -1,11 +1,10 @@
-package me.ry4nn00b.hortifruti.Model.DTOs;
+package me.ry4nn00b.hortifruti.DTOs;
 
 import java.time.LocalDate;
 
-public class PromotionResponseDTO {
+public class PromotionUpdateDTO {
 
     //Promotion Attribute's
-    private String id;
     private String productId;
     private String type;
     private Double value;
@@ -13,10 +12,9 @@ public class PromotionResponseDTO {
     private LocalDate endDate;
     private boolean active;
 
-    public PromotionResponseDTO() {}
+    public PromotionUpdateDTO() {}
 
-    public PromotionResponseDTO(String id, String productId, String type, Double value, LocalDate startDate, LocalDate endDate) {
-        this.id = id;
+    public PromotionUpdateDTO(String productId, String type, Double value, LocalDate startDate, LocalDate endDate) {
         this.productId = productId;
         this.type = type;
         this.value = value;
@@ -25,9 +23,6 @@ public class PromotionResponseDTO {
     }
 
     //Getter's and Setter's
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
     public String getProductId() { return productId; }
     public void setProductId(String productId) { this.productId = productId; }
 

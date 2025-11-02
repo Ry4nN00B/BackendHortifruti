@@ -1,4 +1,4 @@
-package me.ry4nn00b.hortifruti.Model.DTOs;
+package me.ry4nn00b.hortifruti.DTOs;
 
 public class CategoryUpdateDTO {
 

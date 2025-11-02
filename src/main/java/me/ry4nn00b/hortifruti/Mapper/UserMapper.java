@@ -1,8 +1,8 @@
 package me.ry4nn00b.hortifruti.Mapper;
 
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.LoginResponseDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.UserRequestDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.UserResponseDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.LoginResponseDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.UserRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.UserResponseDTO;
 import me.ry4nn00b.hortifruti.Model.UserModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

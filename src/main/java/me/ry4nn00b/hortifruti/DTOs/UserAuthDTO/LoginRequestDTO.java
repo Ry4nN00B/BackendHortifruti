@@ -1,4 +1,4 @@
-package me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO;
+package me.ry4nn00b.hortifruti.DTOs.UserAuthDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

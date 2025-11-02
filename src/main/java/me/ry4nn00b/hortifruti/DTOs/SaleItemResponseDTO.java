@@ -1,17 +1,17 @@
-package me.ry4nn00b.hortifruti.Model;
+package me.ry4nn00b.hortifruti.DTOs;
 
 import java.math.BigDecimal;
 
-public class SaleItemModel {
+public class SaleItemResponseDTO {
 
-    //SaleItem Attribute's
+    //Sale Item Attribute's
     private String productId;
     private Double amount;
     private BigDecimal unitPrice;
 
-    public SaleItemModel() {}
+    public SaleItemResponseDTO() {}
 
-    public SaleItemModel(String productId, Double amount, BigDecimal unitPrice) {
+    public SaleItemResponseDTO(String productId, Double amount, BigDecimal unitPrice) {
         this.productId = productId;
         this.amount = amount;
         this.unitPrice = unitPrice;

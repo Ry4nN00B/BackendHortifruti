@@ -1,11 +1,12 @@
 package me.ry4nn00b.hortifruti.Controller;
 
-import me.ry4nn00b.hortifruti.Model.DTOs.StockRequestDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.StockResponseDTO;
+import me.ry4nn00b.hortifruti.DTOs.StockRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.StockResponseDTO;
 import me.ry4nn00b.hortifruti.Mapper.StockMapper;
 import me.ry4nn00b.hortifruti.Model.StockModel;
 import me.ry4nn00b.hortifruti.Service.Interface.IStockService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,11 +17,9 @@ import java.util.stream.Collectors;
 public class StockController {
 
     private final IStockService stockService;
-    private final StockMapper stockMapper;
 
-    public StockController(IStockService stockService, StockMapper stockMapper) {
+    public StockController(IStockService stockService) {
         this.stockService = stockService;
-        this.stockMapper = stockMapper;
     }
 
     //ENDPOINT - Test API
@@ -29,47 +28,48 @@ public class StockController {
         return "API DE ESTOQUE FUNCIONANDO!";
     }
 
-    //ENDPOINT - Create Stock
-    @PostMapping
-    public ResponseEntity<StockResponseDTO> createStock(@RequestBody StockRequestDTO requestDTO) {
-
-        StockModel model = stockMapper.toModel(requestDTO);
-        StockModel saved = stockService.stockSave(model);
-        StockResponseDTO responseDTO = stockMapper.toResponseDTO(saved);
-
-        return ResponseEntity.ok(responseDTO);
-    }
-
     //ENDPOINT - List Stock
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('GERENTE', 'ESTOQUISTA')")
     public ResponseEntity<List<StockResponseDTO>> getAllStock() {
-        List<StockModel> stock = stockService.stockList();
-        List<StockResponseDTO> responseDTO = stock.stream().map(stockMapper::toResponseDTO).toList();
 
-        return ResponseEntity.ok(responseDTO);
+        List<StockResponseDTO> stockList = stockService.stockList();
+        return ResponseEntity.ok(stockList);
     }
 
     //ENDPOINT - Get Stock By ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('GERENTE', 'ESTOQUISTA')")
     public ResponseEntity<StockResponseDTO> stockFindById(@PathVariable("id") String stockId) {
+
         return stockService.stockFindById(stockId)
-                .map(stockMapper::toResponseDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     //ENDPOINT - Get Stock By Product ID
     @GetMapping("/produto/{productId}")
-    public List<StockResponseDTO> stockByProduct(@PathVariable String productId) {
-        return stockService.stockByProductId(productId)
-                .stream()
-                .map(stockMapper::toResponseDTO)
-                .collect(Collectors.toList());
+    @PreAuthorize("hasAnyAuthority('GERENTE', 'ESTOQUISTA')")
+    public ResponseEntity<List<StockResponseDTO>> stockByProduct(@PathVariable String productId) {
+
+        List<StockResponseDTO> stockList = stockService.stockByProductId(productId);
+        return ResponseEntity.ok(stockList);
+    }
+
+    //ENDPOINT - Create Stock
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority('GERENTE', 'ESTOQUISTA')")
+    public ResponseEntity<StockResponseDTO> createStock(@RequestBody StockRequestDTO requestDTO) {
+
+        StockResponseDTO responseDTO = stockService.stockSave(requestDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
     //ENDPOINT - Delete Stock By ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> stockDelete(@PathVariable("id") String stockId) {
+    @PreAuthorize("hasAnyAuthority('GERENTE', 'ESTOQUISTA')")
+    public ResponseEntity<Void> stockDelete(@PathVariable("id") String stockId) {
+
         return stockService.stockFindById(stockId)
                 .map(existing -> {
                     stockService.stockDelete(stockId);
@@ -80,25 +80,27 @@ public class StockController {
 
     //ENDPOINT - Stock Near Expiration
     @GetMapping("/proximos-a-vencer")
-    public List<StockResponseDTO> stockNearExpiration(@RequestParam int days) {
-        return stockService.stockNearExpiration(days)
-                .stream()
-                .map(stockMapper::toResponseDTO)
-                .collect(Collectors.toList());
+    @PreAuthorize("hasAnyAuthority('GERENTE', 'ESTOQUISTA')")
+    public ResponseEntity<List<StockResponseDTO>> stockNearExpiration(@RequestParam int days) {
+
+        List<StockResponseDTO> stockList = stockService.stockNearExpiration(days);
+        return ResponseEntity.ok(stockList);
     }
 
     //ENDPOINT - Low Stock
     @GetMapping("/estoque-baixo")
-    public List<StockResponseDTO> stockLowAmount(@RequestParam double minAmount) {
-        return stockService.stockLowAmount(minAmount)
-                .stream()
-                .map(stockMapper::toResponseDTO)
-                .collect(Collectors.toList());
+    @PreAuthorize("hasAnyAuthority('GERENTE', 'ESTOQUISTA')")
+    public ResponseEntity<List<StockResponseDTO>> stockLowAmount(@RequestParam double minAmount) {
+
+        List<StockResponseDTO> stockList = stockService.stockLowAmount(minAmount);
+        return ResponseEntity.ok(stockList);
     }
 
     //ENDPOINT - Clean Empty Lots
     @DeleteMapping("/limpar-lotes-vazios")
-    public ResponseEntity<?> cleanEmptyLots() {
+    @PreAuthorize("hasAnyAuthority('GERENTE', 'ESTOQUISTA')")
+    public ResponseEntity<Void> cleanEmptyLots() {
+
         stockService.cleanEmptyLots();
         return ResponseEntity.noContent().build();
     }

@@ -3,6 +3,8 @@ package me.ry4nn00b.hortifruti.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
+
 @Document(collection = "product")
 public class ProductModel {
 
@@ -11,14 +13,14 @@ public class ProductModel {
     private String id;
     private String name;
     private String description;
-    private Double price;
+    private BigDecimal price;
     private String categoryId;
     private String supplierId;
     private Boolean soldByWeight;
 
     public ProductModel() {}
 
-    public ProductModel(String id, String name, String description, Double price, String categoryId, String supplierId, Boolean soldByWeight) {
+    public ProductModel(String id, String name, String description, BigDecimal price, String categoryId, String supplierId, Boolean soldByWeight) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -38,8 +40,8 @@ public class ProductModel {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public Double getPrice() { return price; }
-    public void setPrice(Double price) { this.price = price; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 
     public String getCategoryId() { return categoryId; }
     public void setCategoryId(String categoryId) { this.categoryId = categoryId; }

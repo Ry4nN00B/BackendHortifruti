@@ -1,28 +1,25 @@
-package me.ry4nn00b.hortifruti.Model;
+package me.ry4nn00b.hortifruti.DTOs;
 
 import me.ry4nn00b.hortifruti.Enum.SaleStatus;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Document(collection = "sale")
-public class SaleModel {
+public class SaleResponseDTO {
 
-    @Id
+    //Sale Attribute's
     private String id;
     private LocalDateTime dateTime;
     private String operatorId;
-    private List<SaleItemModel> items;
+    private List<SaleItemResponseDTO> items;
     private BigDecimal total;
     private String paymentMethod;
     private SaleStatus status;
 
-    public SaleModel() {}
+    public SaleResponseDTO() {}
 
-    public SaleModel(String id, LocalDateTime dateTime, String operatorId, List<SaleItemModel> items, BigDecimal total, String paymentMethod, SaleStatus status) {
+    public SaleResponseDTO(String id, LocalDateTime dateTime, String operatorId, List<SaleItemResponseDTO> items, BigDecimal total, String paymentMethod, SaleStatus status) {
         this.id = id;
         this.dateTime = dateTime;
         this.operatorId = operatorId;
@@ -42,8 +39,8 @@ public class SaleModel {
     public String getOperatorId() { return operatorId; }
     public void setOperatorId(String operatorId) { this.operatorId = operatorId; }
 
-    public List<SaleItemModel> getItems() { return items; }
-    public void setItems(List<SaleItemModel> items) { this.items = items; }
+    public List<SaleItemResponseDTO> getItems() { return items; }
+    public void setItems(List<SaleItemResponseDTO> items) { this.items = items; }
 
     public BigDecimal getTotal() { return total; }
     public void setTotal(BigDecimal total) { this.total = total; }

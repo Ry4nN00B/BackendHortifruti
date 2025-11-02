@@ -1,17 +1,31 @@
-package me.ry4nn00b.hortifruti.Model.DTOs;
+package me.ry4nn00b.hortifruti.DTOs;
 
-public class SupplierUpdateDTO {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public class SupplierRequestDTO {
 
     //Supplier Attribute's
+    @NotBlank(message = "Hortifruti Erro: O nome do fornecedor é obrigatório.")
+    @Size(min = 3, max = 100, message = "Hortifruti Erro: O nome deve ter entre 3 e 100 caracteres.")
     private String name;
+
+    @Size(max = 500, message = "Hortifruti Erro: A descrição pode ter no máximo 500 caracteres.")
     private String description;
+
+    @NotBlank(message = "Hortifruti Erro: O telefone é obrigatório.")
     private String phoneNumber;
+
+    @Email(message = "Hortifruti Erro: O email deve ser válido.")
     private String email;
+
+    @NotBlank(message = "Hortifruti Erro: O CNPJ é obrigatório.")
     private String cnpj;
 
-    public SupplierUpdateDTO() {}
+    public SupplierRequestDTO() {}
 
-    public SupplierUpdateDTO(String name, String description, String phoneNumber, String email, String cnpj) {
+    public SupplierRequestDTO(String name, String description, String phoneNumber, String email, String cnpj) {
         this.name = name;
         this.description = description;
         this.phoneNumber = phoneNumber;

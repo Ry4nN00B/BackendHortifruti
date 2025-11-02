@@ -1,5 +1,7 @@
 package me.ry4nn00b.hortifruti.Service.Interface;
 
+import me.ry4nn00b.hortifruti.DTOs.StockRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.StockResponseDTO;
 import me.ry4nn00b.hortifruti.Model.StockModel;
 
 import java.util.List;
@@ -7,13 +9,13 @@ import java.util.Optional;
 
 public interface IStockService {
 
-    List<StockModel> stockList();
-    Optional<StockModel> stockFindById(String stockId);
-    List<StockModel> stockByProductId(String productId);
-    StockModel stockSave(StockModel stock);
+    List<StockResponseDTO> stockList();
+    Optional<StockResponseDTO> stockFindById(String stockId);
+    List<StockResponseDTO> stockByProductId(String productId);
+    StockResponseDTO stockSave(StockRequestDTO dto);
     void stockDelete(String stockId);
-    List<StockModel> stockNearExpiration(int daysBeforeExpire);
-    List<StockModel> stockLowAmount(double minAmount);
+    List<StockResponseDTO> stockNearExpiration(int daysBeforeExpire);
+    List<StockResponseDTO> stockLowAmount(double minAmount);
     void cleanEmptyLots();
 
 }

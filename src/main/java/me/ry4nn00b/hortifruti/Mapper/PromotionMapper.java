@@ -1,7 +1,7 @@
 package me.ry4nn00b.hortifruti.Mapper;
 
-import me.ry4nn00b.hortifruti.Model.DTOs.PromotionRequestDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.PromotionResponseDTO;
+import me.ry4nn00b.hortifruti.DTOs.PromotionRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.PromotionResponseDTO;
 import me.ry4nn00b.hortifruti.Model.PromotionModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

@@ -1,12 +1,12 @@
 package me.ry4nn00b.hortifruti.Service;
 
-import me.ry4nn00b.hortifruti.Config.TokenManager;
+import me.ry4nn00b.hortifruti.Security.TokenManager;
 import me.ry4nn00b.hortifruti.Enum.Role;
 import me.ry4nn00b.hortifruti.Mapper.UserMapper;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.LoginRequestDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.LoginResponseDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.UserRequestDTO;
-import me.ry4nn00b.hortifruti.Model.DTOs.UserAuthDTO.UserResponseDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.LoginRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.LoginResponseDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.UserRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.UserAuthDTO.UserResponseDTO;
 import me.ry4nn00b.hortifruti.Model.UserModel;
 import me.ry4nn00b.hortifruti.Repository.IUserRepository;
 import me.ry4nn00b.hortifruti.Service.Interface.IUserService;

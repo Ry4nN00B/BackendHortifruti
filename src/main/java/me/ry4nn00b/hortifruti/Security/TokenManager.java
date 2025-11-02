@@ -1,4 +1,4 @@
-package me.ry4nn00b.hortifruti.Config;
+package me.ry4nn00b.hortifruti.Security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

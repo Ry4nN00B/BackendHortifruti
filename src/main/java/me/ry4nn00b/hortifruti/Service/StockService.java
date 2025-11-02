@@ -1,5 +1,8 @@
 package me.ry4nn00b.hortifruti.Service;
 
+import me.ry4nn00b.hortifruti.DTOs.StockRequestDTO;
+import me.ry4nn00b.hortifruti.DTOs.StockResponseDTO;
+import me.ry4nn00b.hortifruti.Mapper.StockMapper;
 import me.ry4nn00b.hortifruti.Model.StockModel;
 import me.ry4nn00b.hortifruti.Repository.IStockRepository;
 import me.ry4nn00b.hortifruti.Service.Interface.IStockService;
@@ -14,37 +17,45 @@ import java.util.stream.Collectors;
 public class StockService implements IStockService {
 
     private final IStockRepository repository;
+    private final StockMapper stockMapper;
 
-    public StockService(IStockRepository repository) {
+    public StockService(IStockRepository repository, StockMapper stockMapper) {
         this.repository = repository;
+        this.stockMapper = stockMapper;
     }
 
     //Get Stock List
     @Override
-    public List<StockModel> stockList() {
-        return repository.findAll();
+    public List<StockResponseDTO> stockList() {
+        return repository.findAll()
+                .stream()
+                .map(stockMapper::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
     //Get Stock By ID
     @Override
-    public Optional<StockModel> stockFindById(String stockId) {
-        return repository.findById(stockId);
+    public Optional<StockResponseDTO> stockFindById(String stockId) {
+        return repository.findById(stockId)
+                .map(stockMapper::toResponseDTO);
     }
 
     //Get Stock By Product ID
     @Override
-    public List<StockModel> stockByProductId(String productId) {
-        return repository.findAll()
-                .stream()
+    public List<StockResponseDTO> stockByProductId(String productId) {
+        return repository.findAll().stream()
                 .filter(s -> s.getProductId().equals(productId))
+                .map(stockMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
     //Save Stock
     @Override
-    public StockModel stockSave(StockModel stock) {
-        stock.setEntryDate(LocalDate.now());
-        return repository.save(stock);
+    public StockResponseDTO stockSave(StockRequestDTO dto) {
+        StockModel model = stockMapper.toModel(dto);
+        model.setEntryDate(LocalDate.now());
+        StockModel saved = repository.save(model);
+        return stockMapper.toResponseDTO(saved);
     }
 
     //Delete By StockID
@@ -55,32 +66,31 @@ public class StockService implements IStockService {
 
     //Get Stock With Expiration Date of Approximately X Days
     @Override
-    public List<StockModel> stockNearExpiration(int daysBeforeExpire) {
+    public List<StockResponseDTO> stockNearExpiration(int daysBeforeExpire) {
         LocalDate today = LocalDate.now();
         LocalDate limit = today.plusDays(daysBeforeExpire);
 
-        return repository.findAll()
-                .stream()
+        return repository.findAll().stream()
                 .filter(s -> s.getValidity() != null &&
                         !s.getValidity().isBefore(today) &&
                         !s.getValidity().isAfter(limit))
+                .map(stockMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
     //Get Products With Low Stock
     @Override
-    public List<StockModel> stockLowAmount(double minAmount) {
-        return repository.findAll()
-                .stream()
+    public List<StockResponseDTO> stockLowAmount(double minAmount) {
+        return repository.findAll().stream()
                 .filter(s -> s.getAmount() <= minAmount)
+                .map(stockMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
     //Remove Empty Lot's
     @Override
     public void cleanEmptyLots() {
-        List<StockModel> all = repository.findAll();
-        all.stream()
+        repository.findAll().stream()
                 .filter(s -> s.getAmount() <= 0)
                 .forEach(s -> repository.deleteById(s.getId()));
     }
