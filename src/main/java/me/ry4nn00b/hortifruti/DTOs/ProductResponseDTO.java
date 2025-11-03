@@ -1,9 +1,6 @@
 package me.ry4nn00b.hortifruti.DTOs;
 
-import org.springframework.http.ResponseEntity;
-
 import java.math.BigDecimal;
-import java.util.Optional;
 
 public class ProductResponseDTO {
 

@@ -2,7 +2,6 @@ package me.ry4nn00b.hortifruti.Service.Interface;
 
 import me.ry4nn00b.hortifruti.DTOs.SaleRequestDTO;
 import me.ry4nn00b.hortifruti.DTOs.SaleResponseDTO;
-import me.ry4nn00b.hortifruti.Model.SaleModel;
 
 import java.util.List;
 import java.util.Optional;

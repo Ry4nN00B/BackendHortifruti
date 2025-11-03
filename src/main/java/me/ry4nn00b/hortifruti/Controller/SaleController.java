@@ -3,8 +3,6 @@ package me.ry4nn00b.hortifruti.Controller;
 import jakarta.validation.Valid;
 import me.ry4nn00b.hortifruti.DTOs.SaleRequestDTO;
 import me.ry4nn00b.hortifruti.DTOs.SaleResponseDTO;
-import me.ry4nn00b.hortifruti.Mapper.SaleMapper;
-import me.ry4nn00b.hortifruti.Model.SaleModel;
 import me.ry4nn00b.hortifruti.Service.Interface.ISaleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

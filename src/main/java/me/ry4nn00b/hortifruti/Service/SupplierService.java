@@ -4,7 +4,6 @@ import me.ry4nn00b.hortifruti.DTOs.SupplierRequestDTO;
 import me.ry4nn00b.hortifruti.DTOs.SupplierResponseDTO;
 import me.ry4nn00b.hortifruti.DTOs.SupplierUpdateDTO;
 import me.ry4nn00b.hortifruti.Mapper.SupplierMapper;
-import me.ry4nn00b.hortifruti.Model.CategoryModel;
 import me.ry4nn00b.hortifruti.Model.SupplierModel;
 import me.ry4nn00b.hortifruti.Repository.ISupplierRepository;
 import me.ry4nn00b.hortifruti.Service.Interface.ISupplierService;

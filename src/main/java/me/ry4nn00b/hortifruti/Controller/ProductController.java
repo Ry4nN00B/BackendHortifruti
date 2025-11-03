@@ -3,7 +3,6 @@ package me.ry4nn00b.hortifruti.Controller;
 import jakarta.validation.Valid;
 import me.ry4nn00b.hortifruti.DTOs.ProductRequestDTO;
 import me.ry4nn00b.hortifruti.DTOs.ProductResponseDTO;
-import me.ry4nn00b.hortifruti.Mapper.ProductMapper;
 import me.ry4nn00b.hortifruti.DTOs.ProductUpdateDTO;
 import me.ry4nn00b.hortifruti.Service.Interface.IProductService;
 import org.springframework.http.HttpStatus;
