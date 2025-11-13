@@ -1,5 +1,5 @@
 # 🥭 Backend System of Hortifruti Mikami  
-### 🚧 In Processing...  
+### ✅ Completed!  
 #### 📚 Project UNIP – PIM IV  
 
 ---
@@ -90,13 +90,9 @@ Além de atender aos objetivos propostos, o sistema fornece uma base sólida par
 
 ---
 
-## 👨‍💻 Autores
-- Caio Mendes Barradas – R090AD6  
-- Gabriel Rodrigues Ramos – R101IG0  
-- Lucas Ramos Pereira – G083GI8  
+## 👨‍💻 Autor
 - **Ryan Gomes Xavier – R1019F2**  
-- Samuel Carvalho Baia – R1981F8  
 
 ---
 
-© 2025 – Universidade Paulista (UNIP) | Projeto PIM IV – Sistema de Gestão Hortifruti Mikami
+© 2025 – Universidade Paulista (UNIP) | Projeto PIM IV – Sistema de Gestão Hortifruti
